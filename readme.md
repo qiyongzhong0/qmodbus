@@ -95,8 +95,18 @@ QModbus package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 - 参数 ：byte_tmo_ms--字节超时时间，单位ms
 - 返回 ：无
 
+#### int mb_connect(mb_inst_t *hinst);
+- 功能 ：建立链路连接, 如已建立连接则立即返回
+- 参数 ：hinst--modbus应用实例指针
+- 返回 ：0 成功, -1 失败 
+
+#### int mb_disconn(mb_inst_t *hinst);
+- 功能 ：断开链路连接, 如已断开连接则立即返回
+- 参数 ：hinst--modbus应用实例指针
+- 返回 ：0 成功, -1 失败 
+
 #### int mb_read_req(mb_inst_t *hinst, u8 func, u16 addr, int nb, u8 *pdata);
-- 功能 ：主机功能函数，读请求，功能码和数据由用户确定，本函数可用于功能扩展使用。
+- 功能 ：主机功能函数，读请求，功能码和数据由用户确定，本函数可用于对非标准或自定义协议做功能扩展。
 - 参数 ：hinst--modbus应用实例指针
 - 参数 ：func--功能码
 - 参数 ：addr--寄存器地址
@@ -105,7 +115,7 @@ QModbus package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 - 返回 ：>0 为读取到的数据长度；=0 表示发生错误；<0 表示从站异常应答，返回值为异常码的负值
 
 #### int mb_write_req(mb_inst_t *hinst, u8 func, u16 addr, int nb, const u8 *pdata, int dlen);
-- 功能 ：主机功能函数，写请求，功能码和数据由用户确定, 本函数可用于功能扩展使用。
+- 功能 ：主机功能函数，写请求，功能码和数据由用户确定, 本函数可用于对非标准或自定义协议做功能扩展。
 - 参数 ：hinst--modbus应用实例指针
 - 参数 ：func--功能码
 - 参数 ：addr--寄存器地址
@@ -210,18 +220,21 @@ QModbus package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 ### 2.2 API函数使用说明
 
 #### 2.2.1 MODBUS主机应用（可参考示例代码 mb_sample_rtu_master.c 或 mb_sample_tcp_master.c）
-1. 定义并初始化后端参数 `const mb_backend_param_t bkd` ；
-2. 使用已定义的后端参数，调用 `mb_create` 函数创建应用实例；
-3. 如默认参数不满足需求，则修改从机地址、通信协议类型、超时时间等参数。
-4. 调用`mb_read_bits`、`mb_read_input_bits`、`mb_read_regs`...等功能函数完成数据读写。
+> 
+##### 1. 定义并初始化后端参数 `const mb_backend_param_t bkd = {}` ；
+##### 2. 调用 `mb_create` 函数创建应用实例；
+##### 3. 如默认参数不满足需求，则可修改从机地址、或修改通信协议类型、或修改超时时间；
+##### 4. 调用`mb_connect`建立链路连接；
+##### 5. 调用`mb_read_bits`、`mb_read_input_bits`、`mb_read_regs`...等主机功能函数完成数据读写；
 
 #### 2.2.2 MODBUS从机应用（可参考示例代码 mb_sample_rtu_slave.c 或 mb_sample_tcp_slave.c）
-1. 定义和实现使用到的从机回调函数。
-2. 定义并初始化后端参数 `const mb_backend_param_t bkd` ；
-3. 使用已定义的后端参数，调用 `mb_create` 函数创建应用实例；
-4. 如默认参数不满足需求，则修改从机地址、通信协议类型、超时时间等参数。
-5. 如自定义了从机回调函数表，则调用函数 `mb_set_cb_table` 修改从机回调函数表。
-6. 在线程中循环调用从机状态机函数 `mb_slave_fsm`。
+> 
+##### 1. 定义和实现使用到的从机回调函数；
+##### 2. 定义并初始化后端参数 `const mb_backend_param_t bkd` ；
+##### 3. 调用 `mb_create` 函数创建应用实例；
+##### 4. 如默认参数不满足需求，则修改从机地址、通信协议类型、超时时间等参数；
+##### 5. 如自定义了从机回调函数表，则调用函数 `mb_set_cb_table` 挂载自定义的从机回调函数表；
+##### 6. 在线程中循环调用从机状态机函数 `mb_slave_fsm`。
 
 
 ### 2.3 获取组件

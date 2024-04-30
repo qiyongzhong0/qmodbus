@@ -38,16 +38,11 @@
 #error MB_USING_MASTER or MB_USING_SLAVE must being defined!
 #endif
 
-#if (defined(MB_USING_PORT_RTT) && defined(MB_USING_RTU_BACKEND) && defined(MB_USING_MASTER))
+//#define MB_USING_SAMPLE         //使用示例
+#ifdef MB_USING_SAMPLE
 //#define MB_USING_SAMPLE_RTU_MASTER  //使用基于RTU后端的主机示例
-#endif
-#if (defined(MB_USING_PORT_RTT) && defined(MB_USING_RTU_BACKEND) && defined(MB_USING_SLAVE))
 //#define MB_USING_SAMPLE_RTU_SLAVE   //使用基于RTU后端的从机示例
-#endif
-#if (defined(MB_USING_PORT_RTT) && defined(MB_USING_TCP_BACKEND) && defined(MB_USING_MASTER))
 //#define MB_USING_SAMPLE_TCP_MASTER  //使用基于TCP后端的主机示例
-#endif
-#if (defined(MB_USING_PORT_RTT) && defined(MB_USING_TCP_BACKEND) && defined(MB_USING_SLAVE))
 //#define MB_USING_SAMPLE_TCP_SLAVE   //使用基于TCP后端的从机示例
 #endif
 
