@@ -376,7 +376,7 @@ static void mb_slave_recv_deal_rtu(mb_inst_t *hinst, u8 *buf, int len)
 }
 #endif
 
-#ifdef MB_USING_RTU_PROTOCOL
+#ifdef MB_USING_TCP_PROTOCOL
 static void mb_slave_recv_deal_tcp(mb_inst_t *hinst, u8 *buf, int len)
 {
     mb_tcp_frm_t frm;
