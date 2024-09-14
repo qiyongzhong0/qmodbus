@@ -16,7 +16,8 @@ int mb_rtu_frm_make(u8 *buf, const mb_rtu_frm_t *frm, mb_pdu_type_t type)//ç”Ÿæˆ
     p += mb_cvt_u8_put(p, frm->saddr);
     p += mb_pdu_make(p, &(frm->pdu), type);
     u16 crc = mb_crc_cal(buf, (int)(p - buf));
-    p += mb_cvt_u16_put(p, crc);
+    *p++ = crc;
+    *p++ = (crc >> 8);
     return((int)(p - buf));
 }
 
