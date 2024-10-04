@@ -202,7 +202,7 @@ static void mb_slave_pdu_deal_write_coils(mb_inst_t *hinst, mb_pdu_t *pdu)
 
 static void mb_slave_pdu_deal_write_regs(mb_inst_t *hinst, mb_pdu_t *pdu)
 {
-    if ((hinst->cb == NULL) || (hinst->cb->write_coil == NULL))
+    if ((hinst->cb == NULL) || (hinst->cb->write_hold == NULL))
     {
         pdu->exc.ec = MODBUS_EC_SLAVE_OR_SERVER_FAILURE;
         pdu->exc.fc = MODBUS_FC_EXCEPT_MAKE(pdu->exc.fc);
