@@ -1,5 +1,5 @@
 /*
- * modbus_port.c
+ * modbus_port_linux.c
  *
  * Change Logs:
  * Date           Author            Notes

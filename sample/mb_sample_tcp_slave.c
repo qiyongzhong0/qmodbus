@@ -1,5 +1,5 @@
 /*
- * mb_sample_tcp_slave.h
+ * mb_sample_tcp_slave.c
  *
  * Change Logs:
  * Date           Author            Notes

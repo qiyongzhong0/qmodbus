@@ -1,5 +1,5 @@
 /*
- * modbus_master.h
+ * modbus_master.c
  *
  * Change Logs:
  * Date           Author            Notes

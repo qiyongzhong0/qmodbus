@@ -1,5 +1,5 @@
 /*
- * modbus_slave.h
+ * modbus_slave.c
  *
  * Change Logs:
  * Date           Author            Notes

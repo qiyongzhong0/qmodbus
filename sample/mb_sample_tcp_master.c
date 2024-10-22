@@ -1,5 +1,5 @@
 /*
- * mb_sample_tcp_master.h
+ * mb_sample_tcp_master.c
  *
  * Change Logs:
  * Date           Author            Notes

@@ -1,5 +1,5 @@
 /*
- * mb_sample_rtu_master.h
+ * mb_sample_rtu_master.c
  *
  * Change Logs:
  * Date           Author            Notes
