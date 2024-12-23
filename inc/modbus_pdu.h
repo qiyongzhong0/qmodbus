@@ -55,9 +55,9 @@ typedef enum {
 }modbus_except_code_t;
 
 typedef enum{
-    MB_PDU_TYPE_REQ = 0,
-    MB_PDU_TYPE_RSP
-}mb_pdu_type_t;
+    MB_PDU_TYPE_REQ = 0,//请求
+    MB_PDU_TYPE_RSP     //响应
+}mb_pdu_type_t;//PDU类型定义
 
 typedef struct{
     u8 fc;          //功能码
@@ -114,16 +114,16 @@ typedef struct{
 }mb_pdu_wr_rd_req_t;//写然后读请求pdu定义
 
 typedef union{
-    u8 fc;
-    mb_pdu_except_t     exc;
-    mb_pdu_rd_req_t     rd_req;
-    mb_pdu_rd_rsp_t     rd_rsp;
-    mb_pdu_wr_single_t  wr_single;
-    mb_pdu_wr_req_t     wr_req;
-    mb_pdu_wr_rsp_t     wr_rsp;
-    mb_pdu_mask_wr_t    mask_wr;
-    mb_pdu_wr_rd_req_t  wr_rd_req;
-}mb_pdu_t;
+    u8 fc;                          //功能码
+    mb_pdu_except_t     exc;        //异常
+    mb_pdu_rd_req_t     rd_req;     //读请求
+    mb_pdu_rd_rsp_t     rd_rsp;     //读响应
+    mb_pdu_wr_single_t  wr_single;  //写单个寄存器请求/响应
+    mb_pdu_wr_req_t     wr_req;     //写多个寄存器请求
+    mb_pdu_wr_rsp_t     wr_rsp;     //写多个寄存器响应
+    mb_pdu_mask_wr_t    mask_wr;    //写多个寄存器请求/响应
+    mb_pdu_wr_rd_req_t  wr_rd_req;  //写然后读请求
+}mb_pdu_t;//PDU数据联合体定义
 
 int mb_pdu_make(u8 *buf, const mb_pdu_t *pdu, mb_pdu_type_t type);//生成pdu帧, 返回帧长度, 失败返回0
 int mb_pdu_parse(const u8 *buf, int len, mb_pdu_t *pdu, mb_pdu_type_t type);//解析pdu帧, 成功返回帧长度, 帧错误返回0, 功能码不支持返回-1

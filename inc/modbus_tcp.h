@@ -25,12 +25,12 @@ typedef struct{
     u16 pid;    //协议类型, 响应须与请求一致
     u16 dlen;   //等于pdu数据长度加1, 打包时会自动计算处理不需人工赋值
     u8  did;    //逻辑设备ID, 响应须与请求一致
-}mb_tcp_mbap_t;
+}mb_tcp_mbap_t;//TCP协议MBAP头定义
 
 typedef struct{
     mb_tcp_mbap_t mbap;//MBAP头
-    mb_pdu_t pdu;//PDU
-}mb_tcp_frm_t;
+    mb_pdu_t pdu;//PDU数据
+}mb_tcp_frm_t;//TCP帧定义
 
 int mb_tcp_frm_make(u8 *buf, const mb_tcp_frm_t *frm, mb_pdu_type_t type);//生成tcp帧, 返回帧长度
 int mb_tcp_frm_parse(const u8 *buf, int len, mb_tcp_frm_t *frm, mb_pdu_type_t type);//解析tcp帧, 返回pdu数据长度, 解析失败返回0, 功能码不支持返回-1

@@ -16,9 +16,9 @@
 #define MB_BKD_BYTE_TMO_MS_DEF      32
 
 typedef enum{
-    MB_BACKEND_TYPE_RTU = 0,
-    MB_BACKEND_TYPE_TCP
-}mb_backend_type_t;
+    MB_BACKEND_TYPE_RTU = 0,//RTU后端
+    MB_BACKEND_TYPE_TCP     //TCP后端
+}mb_backend_type_t;//后端类型定义
     
 typedef struct{
     char *dev;      //设备名
@@ -26,17 +26,17 @@ typedef struct{
     int parity;     //校验位
     int pin;        //收发控制引脚, <0 表示不使用
     int lvl;        //发送控制电平
-}mb_backend_param_rtu_t;
+}mb_backend_param_rtu_t;//RTU后端参数定义
 
 typedef struct{
     char *host;     //ip地址或域名
     int port;       //端口
-}mb_backend_param_tcp_t;
+}mb_backend_param_tcp_t;//TCP后端参数定义
 
 typedef union{
-    mb_backend_param_rtu_t rtu;
-    mb_backend_param_tcp_t tcp;
-}mb_backend_param_t;
+    mb_backend_param_rtu_t rtu;//RTU后端参数
+    mb_backend_param_tcp_t tcp;//TCP后端参数
+}mb_backend_param_t;//后端参数联合体定义
 
 //打开, 成功返回实例指针或文件标识, 错误返回NULL
 typedef void * (* mb_bkd_ops_open_t)(const mb_backend_param_t *param);

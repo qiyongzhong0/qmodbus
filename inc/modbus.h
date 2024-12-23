@@ -22,9 +22,9 @@
 #endif
 
 typedef enum{
-    MB_PROT_RTU = 0,
-    MB_PROT_TCP
-}mb_prot_t;
+    MB_PROT_RTU = 0,    //MODBUS-RTU通信协议
+    MB_PROT_TCP         //MODBUS-TCP通信协议
+}mb_prot_t;//通信协议定义
 
 typedef int (*mb_read_bit_t)(u16 addr, u8 *pbit);//读bit位, 返回: 0-成功, -2-地址错误
 typedef int (*mb_write_bit_t)(u16 addr, u8 bit);//写bit位, 返回: 0-成功, -2-地址错误, -4-设备故障
@@ -39,7 +39,7 @@ typedef struct{
     mb_read_reg_t   read_input; //读输入寄存器
     mb_read_reg_t   read_hold;  //读保持寄存器
     mb_write_reg_t  write_hold; //写保持寄存器
-}mb_cb_table_t;
+}mb_cb_table_t;//从机回调函数表定义
 
 typedef struct{
     u8 saddr;               //从机地址
@@ -49,7 +49,7 @@ typedef struct{
     mb_cb_table_t *cb;      //从机回调函数表
     u8 datas[256];          //读写数据缓冲区
     u8 buf[MB_BUF_SIZE];    //收发缓冲区
-}mb_inst_t;
+}mb_inst_t;//MODBUS实例定义
 
 //创建modbus实例, 成功返回实例指针, 失败返回NULL
 mb_inst_t * mb_create(mb_backend_type_t type, const mb_backend_param_t *param);

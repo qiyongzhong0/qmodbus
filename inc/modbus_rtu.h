@@ -27,7 +27,7 @@
 typedef struct{
     u8 saddr;       //从机地址
     mb_pdu_t pdu;   //pdu
-}mb_rtu_frm_t;
+}mb_rtu_frm_t;//RTU帧定义
 
 int mb_rtu_frm_make(u8 *buf, const mb_rtu_frm_t *frm, mb_pdu_type_t type);//生成rtu帧, 返回帧长度
 int mb_rtu_frm_parse(const u8 *buf, int len, mb_rtu_frm_t *frm, mb_pdu_type_t type);//解析rtu帧, 返回pdu数据长度, 帧错误返回0, 功能码不支持返回-1
