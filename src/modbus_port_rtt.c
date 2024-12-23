@@ -160,7 +160,7 @@ MB_WEAK void * mb_port_tcp_open(const mb_backend_param_t *param)//打开, 成功
     struct hostent *host = gethostbyname(param->tcp.host);
     if (host == NULL)
     {
-        close(sock);
+        closesocket(sock);
         LOG_E("host get error.");
         return(NULL);
     }
@@ -172,7 +172,7 @@ MB_WEAK void * mb_port_tcp_open(const mb_backend_param_t *param)//打开, 成功
     srv_addr.sin_addr = *((struct in_addr *)host->h_addr);
     if (connect(sock, (struct sockaddr *)&srv_addr, sizeof(struct sockaddr)) < 0)
     {
-        close(sock);
+        closesocket(sock);
         LOG_E("socket connect fail.");
         return(NULL);
     }
@@ -185,7 +185,7 @@ MB_WEAK int mb_port_tcp_close(void *hinst)//关闭, 成功返回0, 错误返回-
     MB_ASSERT(hinst != NULL);
 
     int sock = (int)hinst;
-    return((close(sock) == 0) ? 0 : -1);
+    return((closesocket(sock) == 0) ? 0 : -1);
 }
 
 MB_WEAK int mb_port_tcp_read(void *hinst, u8 *buf, int bufsize)//接收数据, 返回接收到的数据长度, 0表示超时, 错误返回-1

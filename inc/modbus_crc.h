@@ -14,6 +14,6 @@
 #define MB_CRC_INIT_VOL     0xFFFF
 
 u16 mb_crc_cyc_cal(u16 init, const u8 *pdata, int len);
-u16 mb_crc_cal(const u8 *pdata, int len);
+u16 mb_crc_cal(const u8 *pdata, int len) ;
 
 #endif

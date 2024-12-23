@@ -11,6 +11,10 @@
 
 #include "rtconfig.h"
 
+#ifndef MB_RTU_ADDR_DEF
+#define MB_RTU_ADDR_DEF         1//缺省从机地址
+#endif
+
 //#define MB_USING_RAW_PRT        //使用原始通信数据打印
 
 //#define MB_USING_ADDR_CHK       //使用从机地址检查

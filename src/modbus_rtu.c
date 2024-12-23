@@ -10,6 +10,8 @@
 #include "modbus_crc.h"
 #include "modbus_cvt.h"
 
+#ifdef MB_USING_RTU_PROTOCOL
+
 int mb_rtu_frm_make(u8 *buf, const mb_rtu_frm_t *frm, mb_pdu_type_t type)//生成rtu帧, 返回帧长度
 {
     u8 *p = buf;
@@ -51,3 +53,4 @@ int mb_rtu_frm_parse(const u8 *buf, int len, mb_rtu_frm_t *frm, mb_pdu_type_t ty
     return(pdu_len);
 }
 
+#endif
