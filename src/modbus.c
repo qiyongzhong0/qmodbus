@@ -44,7 +44,7 @@ mb_inst_t * mb_create(mb_backend_type_t type, const mb_backend_param_t *param)
 
 
     hinst->saddr = MB_RTU_ADDR_DEF;
-    hinst->prot = type;
+    hinst->prot = (type == MB_BACKEND_TYPE_RTU) ? MB_PROT_RTU : MB_PROT_TCP;
     hinst->tid = 0;
     hinst->backend = backend;
     #ifdef MB_USING_SLAVE

@@ -28,8 +28,9 @@
 
 //#define MB_USING_RTU_BACKEND    //使用RTU后端
 //#define MB_USING_TCP_BACKEND    //使用TCP后端
-#if (!defined(MB_USING_RTU_BACKEND) && !defined(MB_USING_TCP_BACKEND))
-#error MB_USING_RTU_BACKEND or MB_USING_TCP_BACKEND must being defined!
+#define MB_USING_SOCK_BACKEND   //使用SOCK后端, 用于TCP服务器从机模式应用
+#if (!defined(MB_USING_RTU_BACKEND) && !defined(MB_USING_TCP_BACKEND) && !defined(MB_USING_SOCK_BACKEND))
+#error MB_USING_RTU_BACKEND, MB_USING_TCP_BACKEND or MB_USING_SOCK_BACKEND must being defined!
 #endif
 
 //#define MB_USING_RTU_PROTOCOL   //使用RTU协议
@@ -46,10 +47,11 @@
 
 //#define MB_USING_SAMPLE         //使用示例
 #ifdef MB_USING_SAMPLE
-//#define MB_USING_SAMPLE_RTU_MASTER  //使用基于RTU后端的主机示例
-//#define MB_USING_SAMPLE_RTU_SLAVE   //使用基于RTU后端的从机示例
-//#define MB_USING_SAMPLE_TCP_MASTER  //使用基于TCP后端的主机示例
-//#define MB_USING_SAMPLE_TCP_SLAVE   //使用基于TCP后端的从机示例
+//#define MB_USING_SAMPLE_RTU_MASTER    //使用基于RTU后端的主机示例
+//#define MB_USING_SAMPLE_RTU_SLAVE     //使用基于RTU后端的从机示例
+//#define MB_USING_SAMPLE_TCP_MASTER    //使用基于TCP后端的主机示例
+//#define MB_USING_SAMPLE_TCP_SLAVE       //使用基于TCP后端的从机示例
+//#define MB_USING_SAMPLE_TCP_SRV_SLAVE   //使用基于TCP服务器的从机示例
 #endif
 
 #endif

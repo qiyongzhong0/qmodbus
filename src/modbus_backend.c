@@ -11,7 +11,6 @@
 #include "modbus_backend.h"
 #include "modbus_port.h"
 
-extern char *strdup(const char *str);
 
 #ifdef MB_USING_RTU_BACKEND
 static const mb_backend_ops_t mb_port_rtu_ops = 
@@ -25,6 +24,7 @@ static const mb_backend_ops_t mb_port_rtu_ops =
 
 static mb_backend_t * mb_backend_create_rtu(const mb_backend_param_rtu_t *rtu)//创建rtu后端
 {
+    extern char *strdup(const char *str);
     mb_backend_t *backend = malloc(sizeof(mb_backend_t));
     if (backend)
     {
@@ -53,6 +53,7 @@ static const mb_backend_ops_t mb_port_tcp_ops =
 
 static mb_backend_t *mb_backend_create_tcp(const mb_backend_param_tcp_t *tcp)//创建tcp后端
 {
+    extern char *strdup(const char *str);
     mb_backend_t *backend = calloc(1, sizeof(mb_backend_t));
     if (backend)
     {
@@ -68,6 +69,34 @@ static mb_backend_t *mb_backend_create_tcp(const mb_backend_param_tcp_t *tcp)//�
     return(backend);
 }
 #endif
+ 
+#ifdef MB_USING_SOCK_BACKEND
+static const mb_backend_ops_t mb_port_sock_ops = 
+{
+    NULL,
+    mb_port_tcp_close,
+    mb_port_tcp_read,
+    mb_port_tcp_write,
+    mb_port_tcp_flush
+};
+
+static mb_backend_t *mb_backend_create_sock(const mb_backend_param_sock_t *sock)//创建sock后端
+{
+    mb_backend_t *backend = calloc(1, sizeof(mb_backend_t));
+    if (backend)
+    {
+        backend->type = MB_BACKEND_TYPE_SOCK;
+        backend->param.sock.fd = sock->fd;
+        backend->ops = &mb_port_sock_ops;
+        backend->ack_tmo_ms = MB_BKD_ACK_TMO_MS_DEF;
+        backend->byte_tmo_ms = MB_BKD_BYTE_TMO_MS_DEF;
+        backend->hinst = (void *)(sock->fd);
+    }
+    
+    return(backend);
+}
+#endif
+
 
 mb_backend_t *mb_backend_create(mb_backend_type_t type, const mb_backend_param_t *param)//创建后端, 成功返回后端指针, 失败返回NULL
 {
@@ -79,11 +108,19 @@ mb_backend_t *mb_backend_create(mb_backend_type_t type, const mb_backend_param_t
         backend = mb_backend_create_rtu(&(param->rtu));
         break;
     #endif
+    
     #ifdef MB_USING_TCP_BACKEND
     case MB_BACKEND_TYPE_TCP :
         backend = mb_backend_create_tcp(&(param->tcp));
         break;
     #endif
+    
+    #ifdef MB_USING_SOCK_BACKEND
+    case MB_BACKEND_TYPE_SOCK :
+        backend = mb_backend_create_sock(&(param->sock));
+        break;
+    #endif
+    
     default:
         break;
     }
@@ -102,6 +139,7 @@ void mb_backend_destory(mb_backend_t *backend)//销毁后端
     
     switch(backend->type)
     {
+    #ifdef MB_USING_RTU_BACKEND
     case MB_BACKEND_TYPE_RTU :
         if (backend->param.rtu.dev)
         {
@@ -109,6 +147,9 @@ void mb_backend_destory(mb_backend_t *backend)//销毁后端
             backend->param.rtu.dev = NULL;
         }
         break;
+    #endif
+    
+    #ifdef MB_USING_TCP_BACKEND
     case MB_BACKEND_TYPE_TCP :
         if (backend->param.tcp.host)
         {
@@ -116,6 +157,8 @@ void mb_backend_destory(mb_backend_t *backend)//销毁后端
             backend->param.tcp.host = NULL;
         }
         break;
+    #endif
+    
     default:
         break;
     }

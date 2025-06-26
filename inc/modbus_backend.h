@@ -17,7 +17,8 @@
 
 typedef enum{
     MB_BACKEND_TYPE_RTU = 0,//RTU后端
-    MB_BACKEND_TYPE_TCP     //TCP后端
+    MB_BACKEND_TYPE_TCP,    //TCP后端
+    MB_BACKEND_TYPE_SOCK    //SOCK后端
 }mb_backend_type_t;//后端类型定义
     
 typedef struct{
@@ -33,9 +34,14 @@ typedef struct{
     int port;       //端口
 }mb_backend_param_tcp_t;//TCP后端参数定义
 
+typedef struct{
+    int fd;         //socket连接标识符
+}mb_backend_param_sock_t;//SOCK后端参数定义
+
 typedef union{
-    mb_backend_param_rtu_t rtu;//RTU后端参数
-    mb_backend_param_tcp_t tcp;//TCP后端参数
+    mb_backend_param_rtu_t rtu; //RTU后端参数
+    mb_backend_param_tcp_t tcp; //TCP后端参数
+    mb_backend_param_sock_t sock; //SOCK后端参数
 }mb_backend_param_t;//后端参数联合体定义
 
 //打开, 成功返回实例指针或文件标识, 错误返回NULL

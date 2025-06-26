@@ -91,9 +91,12 @@ static int mb_port_uart_config(int fd, int baudrate, int databit, int parity, in
     options.c_cflag |= CLOCAL;//修改控制模式，保证程序不会占用串口
     options.c_cflag |= CREAD;//修改控制模式，使得能够从串口中读取输入数据
     //options.c_cflag &= ~CRTSCTS;//不使用流控制
-    options.c_cflag &= ~(IXON | IXOFF | IXANY);//不使用流控制
-    //options.c_cflag |= IXON | IXOFF | IXANY;//使用软件流控制
-     
+    
+    options.c_iflag = 0;
+    //options.c_iflag &= ~(IGNCR | ICRNL | INLCR);//不使用回车换行转换
+    //options.c_iflag &= ~(IXON | IXOFF | IXANY);//不使用软件流控制
+    //options.c_iflag |= IXON | IXOFF | IXANY;//使用软件流控制
+    
     options.c_cflag &= ~CSIZE;//屏蔽其他标志位
     switch (databit)//设置数据位
     {    
@@ -148,17 +151,17 @@ static int mb_port_uart_config(int fd, int baudrate, int databit, int parity, in
         break;
     }  
     
-    options.c_oflag &= ~OPOST;//修改输出模式，原始数据输出
-    options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);  
-    //options.c_lflag &= ~(ISIG | ICANON);  
+    options.c_oflag &= ~OPOST;//关闭输出处理
+    options.c_lflag &= ~(ISIG | TCSADRAIN | ICANON | ECHO | ECHOE);//关闭特殊字符信号发送, 关闭规范输入, 关闭回显  
+    //options.c_lflag &= ~(ISIG | ICANON);//关闭特殊字符信号发送, 关闭规范输入
      
     //设置等待时间和最小接收字符
     options.c_cc[VTIME] = 0; /* 读取一个字符等待1*(1/10)s */
     options.c_cc[VMIN] = 0; /* 读取字符的最少个数为1 */
-     
+    
     //如果发生数据溢出，接收数据，但是不再读取 刷新收到的数据但是不读
-    //tcflush(fd, TCIFLUSH);  
-     
+    //tcflush(fd, TCIFLUSH); 
+    
     //激活配置 (将修改后的termios数据设置到串口中）
     //opt : TCSANOW--立即生效, TCSADRAIN--发送完成后生效, TCSAFLUSH--发送完成后生效并清除输入缓冲
     if (tcsetattr(fd, TCSADRAIN, &options) != 0)//发送完成后生效
@@ -248,7 +251,7 @@ MB_WEAK int mb_port_rtu_flush(void *hinst)//清空接收缓存, 成功返回0, �
 }
 #endif
 
-#ifdef MB_USING_TCP_BACKEND    
+#if (defined(MB_USING_TCP_BACKEND) || defined(MB_USING_SOCK_BACKEND))   
 MB_WEAK void * mb_port_tcp_open(const mb_backend_param_t *param)//打开, 成功返回实例指针或文件标识, 错误返回NULL
 {
     MB_ASSERT(param != NULL);
@@ -301,7 +304,7 @@ MB_WEAK int mb_port_tcp_read(void *hinst, u8 *buf, int bufsize)//接收数据, �
     int len = recv(sock, buf, bufsize, MSG_DONTWAIT);
     if (len == 0)//socket已关闭
     {
-        LOG_E("TCP read error.");
+        LOG_E("tcp read error, fd = %d", sock);
         return(-1);
     }
     if (len < 0)//超时或其它错误
@@ -321,7 +324,7 @@ MB_WEAK int mb_port_tcp_write(void *hinst, u8 *buf, int size)//发送数据, , �
     int len = send(sock, buf, size, 0);
     if (len <= 0)//socket已关闭
     {
-        LOG_E("TCP write error.");
+        LOG_E("tcp write error, fd = %d", sock);
         return(-1);
     }
     

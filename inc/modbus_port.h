@@ -35,7 +35,7 @@ int mb_port_rtu_write(void *hinst, u8 *buf, int size);//发送数据, , 返回�
 int mb_port_rtu_flush(void *hinst);//清空接收缓存, 成功返回0, 错误返回-1
 #endif
 
-#ifdef MB_USING_TCP_BACKEND
+#if (defined(MB_USING_TCP_BACKEND) || defined(MB_USING_SOCK_BACKEND))
 void * mb_port_tcp_open(const mb_backend_param_t *param);//打开, 成功返回实例指针或文件标识, 错误返回NULL
 int mb_port_tcp_close(void *hinst);//关闭, 成功返回0, 错误返回-1
 int mb_port_tcp_read(void *hinst, u8 *buf, int bufsize);//接收数据, 返回接收到的数据长度, 0表示超时, 错误返回-1
