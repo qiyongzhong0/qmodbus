@@ -28,7 +28,7 @@
 
 //#define MB_USING_RTU_BACKEND    //使用RTU后端
 //#define MB_USING_TCP_BACKEND    //使用TCP后端
-#define MB_USING_SOCK_BACKEND   //使用SOCK后端, 用于TCP服务器从机模式应用
+//#define MB_USING_SOCK_BACKEND   //使用SOCK后端, 用于TCP服务器从机模式应用
 #if (!defined(MB_USING_RTU_BACKEND) && !defined(MB_USING_TCP_BACKEND) && !defined(MB_USING_SOCK_BACKEND))
 #error MB_USING_RTU_BACKEND, MB_USING_TCP_BACKEND or MB_USING_SOCK_BACKEND must being defined!
 #endif

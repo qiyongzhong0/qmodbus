@@ -67,8 +67,8 @@ QModbus package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 
 #### mb_inst_t * mb_create(mb_backend_type_t type, const mb_backend_param_t *param);
 - 功能 ：动态创建modbus应用实例
-- 参数 ：type--通信链路后端类型，MB_BACKEND_TYPE_RTU 或 MB_BACKEND_TYPE_TCP 
-- 参数 ：param--后端参数指针，当type为MB_BACKEND_TYPE_RTU时须填写后端参数的rtu域，当type为MB_BACKEND_TYPE_TCP时须填写后端参数的tcp域
+- 参数 ：type--通信链路后端类型，MB_BACKEND_TYPE_RTU 或 MB_BACKEND_TYPE_TCP 或 MB_BACKEND_TYPE_SOCK
+- 参数 ：param--后端参数指针，当type为MB_BACKEND_TYPE_RTU时须填写后端参数的rtu域，当type为MB_BACKEND_TYPE_TCP时须填写后端参数的tcp域，当type为MB_BACKEND_TYPE_SOCK时须填写后端参数的sock域
 - 返回 ：成功返回实例指针，失败返回NULL
 
 #### void mb_destory(mb_inst_t *hinst);
@@ -247,25 +247,27 @@ QModbus package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 
 | 参数宏 | 说明 |
 | ---- | ---- |
-| MB_USING_RAW_PRT		    | 使用原始通信数据打印
-| MB_USING_ADDR_CHK         | 使用从机地址检查
-| MB_USING_MBAP_CHK	        | 使用MBAP头检查
-| MB_USING_PORT_RTT         | 使用rt-thread系统接口
-| MB_USING_PORT_LINUX       | 使用linux系统接口
-| MB_USING_RTU_BACKEND      | 使用RTU通信链路后端
-| MB_USING_TCP_BACKEND      | 使用TCP通信链路后端
-| MB_USING_RTU_PROTOCOL     | 使用MODBUS-RTU通信协议
-| MB_USING_TCP_PROTOCOL     | 使用MODBUS-TCP通信协议
-| MB_USING_MASTER           | 使用主机功能
-| MB_USING_SLAVE            | 使用从机功能
-| MB_USING_SAMPLE_RTU_MASTER| 使用基于RTU通信链路后端的主机示例
-| MB_USING_SAMPLE_RTU_SLAVE | 使用基于RTU通信链路后端的从机示例
-| MB_USING_SAMPLE_TCP_MASTER| 使用基于TCP通信链路后端的主机示例
-| MB_USING_SAMPLE_TCP_SLAVE | 使用基于TCP通信链路后端的从机示例
+| MB_USING_RAW_PRT		        | 使用原始通信数据打印
+| MB_USING_ADDR_CHK             | 使用从机地址检查
+| MB_USING_MBAP_CHK	            | 使用MBAP头检查
+| MB_USING_PORT_RTT             | 使用rt-thread系统接口
+| MB_USING_PORT_LINUX           | 使用linux系统接口
+| MB_USING_RTU_BACKEND          | 使用RTU通信链路后端
+| MB_USING_TCP_BACKEND          | 使用TCP通信链路后端
+| MB_USING_SOCK_BACKEND         | 使用已连接socket通信链路后端
+| MB_USING_RTU_PROTOCOL         | 使用MODBUS-RTU通信协议
+| MB_USING_TCP_PROTOCOL         | 使用MODBUS-TCP通信协议
+| MB_USING_MASTER               | 使用主机功能
+| MB_USING_SLAVE                | 使用从机功能
+| MB_USING_SAMPLE_RTU_MASTER    | 使用基于RTU通信链路后端的主机示例
+| MB_USING_SAMPLE_RTU_SLAVE     | 使用基于RTU通信链路后端的从机示例
+| MB_USING_SAMPLE_TCP_MASTER    | 使用基于TCP通信链路后端的主机示例
+| MB_USING_SAMPLE_TCP_SLAVE     | 使用基于TCP通信链路后端的从机示例
+| MB_USING_SAMPLE_TCP_SRV_SLAVE | 使用基于TCP服务器通信后端的从机示例
 
 > #### 配置特别说明：
 > ##### - MB_USING_PORT_RTT 与 MB_USING_PORT_LINUX 仅可使能其一。
-> ##### - MB_USING_RTU_BACKEND 与 MB_USING_TCP_BACKEND 至少使能其一。
+> ##### - MB_USING_RTU_BACKEND，MB_USING_TCP_BACKEND 与 MB_USING_SOCK_BACKEND至少使能其一。
 > ##### - MB_USING_RTU_PROTOCOL 与 MB_USING_TCP_PROTOCOL 至少使能其一。
 > ##### - MB_USING_MASTER 与 MB_USING_SLAVE 至少使能其一。
 
