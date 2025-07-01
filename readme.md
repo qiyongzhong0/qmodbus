@@ -12,38 +12,39 @@
 
 ``` 
 modbus
-├───inc                         // 头文件目录
-│   |   modbus.h                // API接口头文件
-│   |   modbus_backend.h        // 后端模块头文件
-│   |   modbus_cfg.h            // 配置头文件
-│   |   modbus_crc.h            // CRC校验模块头文件
-│   |   modbus_cvt.h            // 数据转换模块头文件
-│   |   modbus_pdu.h            // PDU模块头文件
-│   |   modbus_port.h           // 移植接口头文件
-│   |   modbus_rtu.h            // RTU通信协议模块头文件
-│   |   modbus_tcp.h            // TCP通信协议模块头文件
-│   └───typedef.h               // 数据类型定义头文件
-├───src                         // 源码目录
-│   |   modbus.c                // 主模块
-│   |   modbus_backend.c        // 后端模块
-│   |   modbus_crc.c            // CRC校验模块
-│   |   modbus_cvt.c            // 数据转换模块
-│   |   modbus_master.c         // 主机功能模块
-│   |   modbus_pdu.c            // PDU模块
-│   |   modbus_port_linux.c     // linux移植接口模块
-│   |   modbus_port_rtt.c       // RT-Thread移植接口模块
-│   |   modbus_port_slave.c     // 从机移植接口模块
-│   |   modbus_rtu.c            // RTU通信协议模块
-│   |   modbus_slave.c          // 从机功能模块
-│   └───modbus_tcp.c            // TCP通信协议模块
-├───sample                      // 使用示例目录
-│   |   mb_sample_rtu_master.c  // RTU主机使用示例
-│   |   mb_sample_rtu_slave.c   // RTU从机使用示例
-│   |   mb_sample_tcp_master.c  // TCP主机使用示例
-│   └───mb_sample_rtu_slave.c   // TCP从机使用示例
-│   license                     // 软件包许可证
-│   readme.md                   // 软件包使用说明
-└───SConscript                  // RT-Thread 默认的构建脚本
+├───inc                             // 头文件目录
+│   |   modbus.h                    // API接口头文件
+│   |   modbus_backend.h            // 后端模块头文件
+│   |   modbus_cfg.h                // 配置头文件
+│   |   modbus_crc.h                // CRC校验模块头文件
+│   |   modbus_cvt.h                // 数据转换模块头文件
+│   |   modbus_pdu.h                // PDU模块头文件
+│   |   modbus_port.h               // 移植接口头文件
+│   |   modbus_rtu.h                // RTU通信协议模块头文件
+│   |   modbus_tcp.h                // TCP通信协议模块头文件
+│   └───typedef.h                   // 数据类型定义头文件
+├───src                             // 源码目录
+│   |   modbus.c                    // 主模块
+│   |   modbus_backend.c            // 后端模块
+│   |   modbus_crc.c                // CRC校验模块
+│   |   modbus_cvt.c                // 数据转换模块
+│   |   modbus_master.c             // 主机功能模块
+│   |   modbus_pdu.c                // PDU模块
+│   |   modbus_port_linux.c         // linux移植接口模块
+│   |   modbus_port_rtt.c           // RT-Thread移植接口模块
+│   |   modbus_port_slave.c         // 从机移植接口模块
+│   |   modbus_rtu.c                // RTU通信协议模块
+│   |   modbus_slave.c              // 从机功能模块
+│   └───modbus_tcp.c                // TCP通信协议模块
+├───sample                          // 使用示例目录
+│   |   mb_sample_rtu_master.c      // RTU主机使用示例
+│   |   mb_sample_rtu_slave.c       // RTU从机使用示例
+│   |   mb_sample_tcp_master.c      // TCP主机使用示例
+│   |   mb_sample_rtu_slave.c       // TCP从机使用示例
+│   └───mb_sample_tcp_srv_slave.c   // TCP服务器从机示例
+│   license                         // 软件包许可证
+│   readme.md                       // 软件包使用说明
+└───SConscript                      // RT-Thread 默认的构建脚本
 ```
 
 
@@ -236,6 +237,11 @@ QModbus package 遵循 LGPLv2.1 许可，详见 `LICENSE` 文件。
 ##### 5. 如自定义了从机回调函数表，则调用函数 `mb_set_cb_table` 挂载自定义的从机回调函数表；
 ##### 6. 在线程中循环调用从机状态机函数 `mb_slave_fsm`。
 
+#### 2.2.3 基于TCP服务器的MODBUS从机应用（可参考示例代码 mb_sample_tcp_srv_slave.c）
+> 
+##### 1. 定义和实现使用到的从机回调函数；
+##### 2. 定义从机服务线程函数，函数中根据传入socket创建应用实例，然后配置工作参数，最后循环调用从机状态机函数 `mb_slave_fsm`，具体过程有参考上面从机应用部分的说明；
+##### 3. 建立TCP服务器侦听服务, 然后等待客户端接入；当客户端接入后，使用已建立的socket做为参数创建一个从机服务线程，用于完成此socket连接的从机服务请求。
 
 ### 2.3 获取组件
 
