@@ -12,10 +12,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include "rtdevice.h"
 
 #define DBG_TAG "modbus.port.rtt"
@@ -145,6 +141,12 @@ MB_WEAK int mb_port_rtu_flush(void *hinst)//清空接收缓存, 成功返回0, �
 #endif
 
 #if (defined(MB_USING_TCP_BACKEND) || defined(MB_USING_SOCK_BACKEND))  
+
+#include <sys/socket.h>
+#include <netdb.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 MB_WEAK void * mb_port_tcp_open(const mb_backend_param_t *param)//打开, 成功返回实例指针或文件标识, 错误返回NULL
 {
     MB_ASSERT(param != NULL);

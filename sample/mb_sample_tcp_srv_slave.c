@@ -8,11 +8,12 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <sys/socket.h>
 #include "rtthread.h"
 #include "modbus.h"
 
 #ifdef MB_USING_SAMPLE_TCP_SRV_SLAVE
+
+#include <sys/socket.h>
 
 #define DBG_TAG "mb.tcp.srv.slave"
 #define DBG_LVL DBG_LOG
